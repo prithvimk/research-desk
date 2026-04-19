@@ -1,0 +1,26 @@
+# --- Python & System ---
+__pycache__/
+logs/
+.env
+*.pyc
+venv/
+
+# --- Research Inbox ---
+data/01_inbox/*
+!data/01_inbox/.gitkeep
+
+# --- Obsidian Internals ---
+# Ignore the workspace (it changes every time you click a note)
+data/04_obsidian_vault/.obsidian/workspace.json
+data/04_obsidian_vault/.obsidian/workspace-mobile.json
+
+# Ignore the cache and local storage
+data/04_obsidian_vault/.obsidian/cache/
+data/04_obsidian_vault/.obsidian/indexed-db/
+
+# KEEP these (Settings, Plugins, Themes)
+!data/04_obsidian_vault/.obsidian/app.json
+!data/04_obsidian_vault/.obsidian/appearance.json
+!data/04_obsidian_vault/.obsidian/plugins.json
+!data/04_obsidian_vault/.obsidian/hotkeys.json
+!data/04_obsidian_vault/.obsidian/community-plugins.json

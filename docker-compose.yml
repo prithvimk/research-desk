@@ -1,0 +1,31 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_engine
+    volumes:
+      - ./data/03_vector_store/ollama_models:/root/.ollama
+    ports:
+      - "11434:11434"
+    # Remove the 'deploy' section below if you don't have an NVIDIA GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: always
+
+  # This is a helper container to auto-pull the model on first launch
+  model-puller:
+    image: curlimages/curl:latest
+    container_name: ollama_puller
+    depends_on:
+      - ollama
+    entrypoint: [ "sh", "-c", "sleep 5 && curl http://ollama:11434/api/pull -d '{\"name\": \"gemma4:e4b\"}'" ]
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
