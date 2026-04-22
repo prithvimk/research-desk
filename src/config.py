@@ -1,5 +1,10 @@
 import os
+import logging
 from pathlib import Path
+
+# Configure logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 # Use absolute paths to avoid Windows pathing issues
 BASE_DIR = Path(__file__).parent.parent

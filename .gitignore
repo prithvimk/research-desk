@@ -4,6 +4,8 @@ logs/
 .env
 *.pyc
 venv/
+bin/
+models/
 
 # --- Research Inbox ---
 data/01_inbox/*

@@ -1,40 +1,37 @@
-import ollama
+import requests
+import json
 import re
-from config import MODEL_NAME, MAX_CONTEXT_TOKENS
+from config import logger
 
 class ResearchBrain:
     def __init__(self):
-        self.model = MODEL_NAME
+        self.url = "http://127.0.0.1:8080/v1/chat/completions"
 
     def generate_note(self, text_chunk):
-        system_prompt = f"""
-        You are a research assistant. Extract key entities and concepts from this text.
-        Format as a Karpathy-style Obsidian wiki note.
-        Target context: {MAX_CONTEXT_TOKENS} tokens.
-        Use [[WikiLinks]] for internal connections.
-        """
-        
-        try:
-            response = ollama.generate(
-                model=self.model,
-                prompt=f"Text to analyze: {text_chunk}",
-                system=system_prompt,
-                options={
-                    "num_ctx": MAX_CONTEXT_TOKENS,
-                    "temperature": 0.1,  # Keep it factual
-                    "num_gpu": 1        # Ensure it stays on the 1050Ti
+        payload = {
+            "messages": [
+                {
+                    "role": "system", 
+                    "content": "You are a Research Assistant. Extract technical entities and concepts. Format as Obsidian notes with [[WikiLinks]]."
+                },
+                {
+                    "role": "user", 
+                    "content": f"Analyze this text: {text_chunk}"
                 }
-            )
+            ],
+            "temperature": 0.1,
+            "extra_body": {"top_k": 40} # Granite 4 specific tuning
+        }
+
+        try:
+            response = requests.post(self.url, json=payload)
+            response.raise_for_status()
+            content = response.json()['choices'][0]['message']['content']
             
-            full_response = response['response']
+            # Logging the performance (llama-server returns this in headers/meta)
+            logger.info("🧠 Brain processed chunk via Speculative Decoding.")
+            return {"content": content}
             
-            # Gemma 4 Thinking Extraction
-            thought = re.search(r'<\|think\|>(.*?)<\|thought\|>', full_response, re.DOTALL)
-            clean_content = re.sub(r'<\|think\|>.*?<\|thought\|>', '', full_response, flags=re.DOTALL).strip()
-            
-            return {
-                "thought": thought.group(1) if thought else "No trace",
-                "content": clean_content
-            }
         except Exception as e:
+            logger.error(f"❌ Server Error: {e}")
             return {"error": str(e)}
