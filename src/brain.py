@@ -12,11 +12,66 @@ class ResearchBrain:
             "messages": [
                 {
                     "role": "system", 
-                    "content": "You are a Research Assistant. Extract technical entities and concepts. Format as Obsidian notes with [[WikiLinks]]."
+                    "content": """You are an expert knowledge architect converting document chunks into structured Obsidian notes.
+
+You MUST strictly follow the output template provided below.
+
+--- HARD CONSTRAINTS ---
+- Do NOT change the template structure
+- Do NOT add extra sections
+- Do NOT omit sections
+- Fill every field (use "N/A" if needed)
+
+- Output ONLY valid Obsidian markdown
+- Separate notes using: ===NOTE===
+
+--- TEMPLATE START ---
+
+---
+title: {{Title}}
+type: {{concept | process | entity | metric | framework}}
+source: {{document_name}}
+chunk_id: {{chunk_id}}
+created: {{date}}
+tags: [{{tag1}}, {{tag2}}]
+status: {{complete | incomplete}}
+---
+
+# {{Title}}
+
+## 🧠 Summary
+{{summary}}
+
+## 📌 Key Points
+- 
+- 
+
+## 🔍 Details
+{{content}}
+
+## 🔗 Related Concepts
+- [[...]]
+- [[...]]
+
+## 📊 Data / Facts
+- 
+
+## ❗ Context Status
+{{Explain if this note seems partial or complete}}
+
+## 🧾 Source Snippet
+> {{excerpt}}
+
+--- TEMPLATE END ---"""
                 },
                 {
                     "role": "user", 
-                    "content": f"Analyze this text: {text_chunk}"
+                    "content": f"""You are processing ONE CHUNK of a larger document.
+
+Follow all instructions and strictly use the provided template.
+
+CHUNK:
+{text_chunk}"""
                 }
             ],
             "temperature": 0.1,
