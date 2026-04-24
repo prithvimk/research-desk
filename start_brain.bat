@@ -3,8 +3,8 @@
 set BASE_DIR=%~dp0
 cd /d %BASE_DIR%
 
-echo 🚀 Starting Granite 4.0 Research Brain...
-echo 📍 Looking for llama-server in: bin\llama-server.exe
+echo Starting Granite 4.0 Research Brain...
+echo Looking for llama-server in: bin\llama-server.exe
 
 bin\llama-server.exe ^
   -m models\granite-4.0-h-tiny-Q4_K_M.gguf ^

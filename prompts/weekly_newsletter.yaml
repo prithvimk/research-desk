@@ -1,0 +1,11 @@
+description: "Writes a high-level executive summary of the weekly changes."
+temperature: 0.3
+top_k: 40
+prompt: |
+  You are a Research Director. I will provide you with the 'Delta' (changes) 
+  from my personal research wiki over the last 7 days.
+  Your goal: Write a high-level executive summary.
+  - Group updates by Theme (e.g., AI, Biology, Personal Projects).
+  - Highlight "New Connections": Did a new note on Topic A change the context of existing Topic B?
+  - Suggest 3 follow-up research questions for next week.
+  Format: Professional Markdown.

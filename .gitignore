@@ -15,6 +15,7 @@ data/01_inbox/*
 # Ignore the workspace (it changes every time you click a note)
 data/04_obsidian_vault/.obsidian/workspace.json
 data/04_obsidian_vault/.obsidian/workspace-mobile.json
+data/04_obsidian_vault/*.md
 
 # Ignore the cache and local storage
 data/04_obsidian_vault/.obsidian/cache/
