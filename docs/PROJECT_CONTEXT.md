@@ -17,6 +17,10 @@ research-desk/
 ├── .env                        # Core environment variables (paths, LLM endpoints)
 ├── start_brain.bat             # Batch script to boot the llama.cpp server with model params
 ├── requirements.txt            # Python dependencies (watchdog, requests, PyYAML, etc.)
+├── docker-compose.yml          # Container configuration for the environment
+├── bin/                        # Directory containing llama.cpp server and binaries
+├── models/                     # Local storage for downloaded LLM models (e.g., GGUF files)
+├── templates/                  # Templates for outputs (e.g., HTML newsletters)
 ├── data/
 │   ├── 01_inbox/               # Watched folder where raw text files are dropped
 │   ├── 02_processed/           # (Reserved) For files that have been successfully parsed
@@ -24,6 +28,7 @@ research-desk/
 │   └── 04_obsidian_vault/      # The Git-tracked Obsidian Vault where output notes are saved
 ├── prompts/                    # YAML files defining prompts and model parameters
 │   ├── note_synthesis.yaml     # Prompt and parameters for creating Obsidian notes
+│   ├── semantic_compression.yaml # Prompt for refining raw transcripts into dense prose
 │   └── weekly_newsletter.yaml  # Prompt and parameters for generating the weekly delta
 └── src/                        # Core Python application logic
     ├── brain.py                # LLM API client wrapper
@@ -31,7 +36,9 @@ research-desk/
     ├── newsletter.py           # Weekly summary generator based on Git history
     ├── config.py               # Central configuration module (loads from .env)
     ├── logger.py               # Central logging module
-    └── prompt_manager.py       # Helper to load and parse YAML prompt configurations
+    ├── prompt_manager.py       # Helper to load and parse YAML prompt configurations
+    ├── parser.py               # (Planned) Parsing utilities for incoming text
+    └── wiki_manager.py         # (Planned) Logic for managing wiki or vault structure
 ```
 
 ---
@@ -71,6 +78,10 @@ research-desk/
 ### E. `start_brain.bat` (The Server Bootstrapper)
 - **Role**: A Windows batch script that boots the local LLM server using `llama-server.exe`.
 - **Workflow**: It is currently configured to load `granite-4.0-h-tiny-Q4_K_M` as the main model and `granite-4.0-1b-Q4_K_M` as a draft model (utilizing speculative decoding for faster inference speeds). It binds to port `8080`.
+
+### F. Planned Components
+- **`src/parser.py`**: Intended to handle advanced parsing of incoming text, utilizing the `semantic_compression.yaml` prompt to refine raw transcripts into dense, semantically rich prose.
+- **`src/wiki_manager.py`**: Intended to manage the structure and organization of the generated Obsidian notes in the vault.
 
 ---
 
